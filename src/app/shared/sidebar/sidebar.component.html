@@ -1,0 +1,25 @@
+<!--Slidebar:
+    fondo negro, borde a la derecha, padding de 3 puntos id sidebar -->
+<div class = "bg-dark border-right p-3" id = "sidebar">
+  <h3 class="text-light">
+    Gifs-Apps
+  </h3>
+
+  <!-- Aqui defino una raya blanca debajo del titulo del slidebar -->
+  <hr class ="text-white" />
+
+  <!--Aqui creo un elemento de la lista con list-group
+      cuando utilizo elemento con pipe  y titlecase, es para convertir  la primer letra de cada palabra de elemento a mayuscula-->
+  <div  class="list-group list reset">
+    <a  *ngFor = "let elemento  of historial"
+        href="#"
+        class="list-group-item  list-group-item-action">
+      {{ elemento | titlecase }}
+    </a>
+
+  </div>
+
+
+
+</div>
+<!--fin Slidebar-->
