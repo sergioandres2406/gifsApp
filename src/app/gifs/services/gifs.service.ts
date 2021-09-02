@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Gif, SearchGifsResponse} from "../interface/gifs.interface";
 
 
@@ -10,6 +10,8 @@ export class GifsService {
 
       /*   CLAVE DEL API DE GIPHY  2ZPKKUbzb5wKjvBdyokhVrvuTYbTgRMM  */
   private  apiKey: string = '2ZPKKUbzb5wKjvBdyokhVrvuTYbTgRMM';
+
+  private  servicioUrl: string = 'https://api.giphy.com/v1/gifs';
 
       /*  declaro la propiedad privada historial  como un arreglo de strings y la inicializo en cero
       * El guion bajo a la izq de historial es para actualizar valores en tiempo real */
@@ -43,6 +45,8 @@ export class GifsService {
     * y ponemos la ! para que angular confie en la ejecución  */
     this._historial = JSON.parse(localStorage.getItem('historial')!) || [];
 
+    this.resultados = JSON.parse(localStorage.getItem('Ultima_Busqueda')!) || [];
+
   }
 
       /* Buscargifs recibe un parámetro query de tipo string y con unshift pongo el valor al principio del arreglo  */
@@ -61,15 +65,26 @@ export class GifsService {
       localStorage.setItem('historial', JSON.stringify( this._historial ) );
     }
 
+
+    /*  defino una constante lamada params que es un objeto httpParams */
+    const params = new HttpParams()
+      .set('api_key', this.apiKey)
+      .set('limit','10')
+      .set('q',query);
+      console.log(params.toString());
+
       /*  estoy llamando el método get del parámetro http que creé del módulo HttpClient  para captura
       *   .suscribe funciona como un then:  una vez se concrete la url entonces realizará la acción dentro del .suscribe
       *   en este caso,  cuando se resuelva la url va a devolver un objeto tipo json, y va a quedar en el objeto resp que acabamos de crear
       * el get va a traer una respuesta o resultado de la url,  y le especificamos que esa respuesta que va a traer va a ser del tipo de la interfaz SearchGifsResponse  */
 
-   this.http.get<SearchGifsResponse>(`https://api.giphy.com/v1/gifs/search?api_key=2ZPKKUbzb5wKjvBdyokhVrvuTYbTgRMM&q=${ query }&limit=10`)
+
+   this.http.get<SearchGifsResponse>(`${this.servicioUrl}/search`,{params})
      .subscribe((resp ) => {
       console.log(resp.data);
-      this.resultados = resp.data;
+      this.resultados =resp.data;
+       /*  estoy guardando en local storage el objeto resultados convertido a string  con la instruccion JSON.stringify  */
+       localStorage.setItem('Ultima_Busqueda', JSON.stringify( this.resultados ) );
 
      });
   }

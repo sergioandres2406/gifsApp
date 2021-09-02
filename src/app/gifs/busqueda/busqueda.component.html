@@ -1,0 +1,11 @@
+<h5>Buscar:</h5>
+<!--  aqui invoco un metodo que se llama keyup.enter para capturar el enter
+  que se ejecute en la caja de texto input
+ keyup.enter quiere decir que cuando haya un enter en el input va a llamar la función buscar() -->
+<input
+  type="text"
+  class="form-control"
+  placeholder="Buscar gifs..."
+  (keyup.enter)="buscar()"
+   #inputBuscar
+>

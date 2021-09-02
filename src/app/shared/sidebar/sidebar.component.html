@@ -12,6 +12,7 @@
       cuando utilizo elemento con pipe  y titlecase, es para convertir  la primer letra de cada palabra de elemento a mayuscula-->
   <div  class="list-group list reset">
     <a  *ngFor = "let elemento  of historial"
+        (click) = buscar(elemento);
         href="#"
         class="list-group-item  list-group-item-action">
       {{ elemento | titlecase }}
